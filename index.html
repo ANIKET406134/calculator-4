@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Neon Calculator</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .calculator {
+      background: #1a1a1d;
+      border-radius: 20px;
+      padding: 25px;
+      width: 320px;
+      box-shadow: 0 0 15px #00f2ff88;
+    }
+
+    .display {
+      background: #121212;
+      color: #00f2ff;
+      font-size: 2rem;
+      padding: 15px 20px;
+      border-radius: 10px;
+      text-align: right;
+      overflow-x: auto;
+      margin-bottom: 20px;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+    }
+
+    button {
+      font-size: 1.3rem;
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      background-color: #272727;
+      color: #ffffff;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    button:hover {
+      background-color: #333;
+      transform: scale(1.05);
+    }
+
+    .operator {
+      background-color: #ff5c5c;
+      color: white;
+    }
+
+    .equal {
+      background-color: #00f2ff;
+      color: black;
+      grid-column: span 2;
+    }
+
+    .clear {
+      background-color: #ffaa00;
+      color: black;
+      grid-column: span 2;
+    }
+
+    @media (max-width: 360px) {
+      .calculator {
+        width: 90vw;
+      }
+
+      .display {
+        font-size: 1.5rem;
+      }
+
+      button {
+        font-size: 1rem;
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <div class="display" id="display">0</div>
+    <div class="buttons">
+      <button class="clear" onclick="clearDisplay()">C</button>
+      <button class="operator" onclick="appendOperator('/')">÷</button>
+      <button class="operator" onclick="appendOperator('*')">×</button>
+      <button onclick="appendNumber('7')">7</button>
+      <button onclick="appendNumber('8')">8</button>
+      <button onclick="appendNumber('9')">9</button>
+      <button class="operator" onclick="appendOperator('-')">−</button>
+      <button onclick="appendNumber('4')">4</button>
+      <button onclick="appendNumber('5')">5</button>
+      <button onclick="appendNumber('6')">6</button>
+      <button class="operator" onclick="appendOperator('+')">+</button>
+      <button onclick="appendNumber('1')">1</button>
+      <button onclick="appendNumber('2')">2</button>
+      <button onclick="appendNumber('3')">3</button>
+      <button onclick="appendNumber('0')">0</button>
+      <button onclick="appendNumber('.')">.</button>
+      <button class="equal" onclick="calculate()">=</button>
+    </div>
+  </div>
+
+  <script>
+    let display = document.getElementById('display');
+    let currentInput = '';
+
+    function appendNumber(num) {
+      if (currentInput === '0' && num !== '.') {
+        currentInput = '';
+      }
+      currentInput += num;
+      updateDisplay();
+    }
+
+    function appendOperator(op) {
+      if (/[+\-*/]$/.test(currentInput)) {
+        currentInput = currentInput.slice(0, -1);
+      }
+      currentInput += op;
+      updateDisplay();
+    }
+
+    function clearDisplay() {
+      currentInput = '';
+      updateDisplay();
+    }
+
+    function calculate() {
+      try {
+        currentInput = eval(currentInput).toString();
+      } catch {
+        currentInput = 'Error';
+      }
+      updateDisplay();
+    }
+
+    function updateDisplay() {
+      display.textContent = currentInput || '0';
+    }
+  </script>
+</body>
+</html>
